@@ -1,0 +1,6 @@
+@echo off
+"C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\CBfrag1\bin\Release\net8.0\win-x64\publish\CBtest.exe" > "C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\Fraglogs\Frag1log.log" 2>&1
+"C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\CBfrag2\bin\Release\net8.0\win-x64\publish\CBtest2.exe" > "C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\Fraglogs\Frag2log.log" 2>&1
+"C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\CBfrag3\bin\Release\net8.0\win-x64\publish\CBtest3.exe" > "C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\Fraglogs\Frag3log.log" 2>&1
+"C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\CBfrag4\bin\Release\net8.0\win-x64\publish\CBtest4.exe" > "C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\Fraglogs\Frag4log.log" 2>&1
+"C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\CBfrag5\bin\Release\net8.0\win-x64\publish\CBtest5.exe" > "C:\Users\Public\Documents\ChargeBreakdownPipeline\CBfragments\Fraglogs\Frag5log.log" 2>&1
