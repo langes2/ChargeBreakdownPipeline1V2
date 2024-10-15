@@ -22,7 +22,7 @@ class Apitester
             Console.WriteLine("Failed to retrieve API token.");
             return;
         }
-        
+
         // Initialize HttpClient
         using (HttpClient client = new HttpClient())
         {
@@ -35,15 +35,13 @@ class Apitester
             client.DefaultRequestHeaders.Add("X-RM12Api-locationID", "4");
 
             // Get first of month date and current date
-            // Automatically fill in the first of the current month
             DateTime firstDayOfCurrentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            // Automatically fill in the current date
             DateTime currentDate = DateTime.Now;
 
             string startDate = firstDayOfCurrentMonth.ToString("MM/dd/yy");
             string endDate = currentDate.ToString("MM/dd/yy");
 
-            HttpResponseMessage response = await client.GetAsync($"/Reports/29/RunReport?parameters=ChargeTypeOrder,(93,94,95,96,97,98,99,100,101);StartDate,{startDate};EndDate,{endDate}&GetOptions=ReturnExcelStream");
+            HttpResponseMessage response = await client.GetAsync($"/Reports/29/RunReport?parameters=ChargeTypeOrder,(2,3,4,7,8,10,15,16,17,38,39,54);StartDate,{startDate};EndDate,{endDate}&GetOptions=ReturnExcelStream");
             try
             {
                 response.EnsureSuccessStatusCode();
@@ -52,36 +50,41 @@ class Apitester
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                return;
+                    return;
                 }
                 else
                 {
-                throw ex;
+                    throw ex;
                 }
             }
-            
+
+            // Generate the folder and file path with the current date
             string currDate = currentDate.ToString("MM_dd_yy");
 
-            string reportPath = $@"C:\Users\Public\Documents\CBfrags\CBfrags{currDate}";
-            Directory.CreateDirectory(reportPath); // Ensure the directory exists
-            //string reportPath = r"C:\Users\Public\Documents\ChargeBreakdowns"
-            string reportFile = Path.Combine(reportPath, $"ChargeBreakdown{currDate}frag5.xlsx");
+            // Base folder path
+            string baseReportPath = @"C:\Users\Public\Documents\CBfrags";
+            
+            // Create a new subfolder with the current date
+            string datedFolderPath = Path.Combine(baseReportPath, $"CBfrags{currDate}");
+            Directory.CreateDirectory(datedFolderPath); // Ensure the dated folder exists
 
-            //string reportPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //string reportFile = reportPath + $@"\ChargeBreakdown{currDate}.xlsx";
+            // Create the file path inside the new folder
+            string reportFile = Path.Combine(datedFolderPath, $"ChargeBreakdown{currDate}frag1.xlsx");
 
+            // Handle the report stream
             Stream reportStream = response.Content.ReadAsStreamAsync().Result;
             if (reportStream.GetType().Name == "MemoryStream")
             {
                 if (File.Exists(reportFile))
                 {
-                File.Delete(reportFile);
+                    File.Delete(reportFile);
                 }
 
-                Stream fileStream = File.Create(reportFile);
-                reportStream.CopyTo(fileStream);
+                using (Stream fileStream = File.Create(reportFile))
+                {
+                    reportStream.CopyTo(fileStream);
+                }
 
-                fileStream.Close();
                 reportStream.Close();
             }
         }
